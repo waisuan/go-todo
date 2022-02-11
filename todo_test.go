@@ -149,4 +149,16 @@ func TestGetAllTodos(t *testing.T) {
 			t.Errorf("expected due todo items: got %v, want %v", got, want)
 		}
 	})
+
+	t.Run("no due todo items", func(t *testing.T) {
+		todoList := NewTodoList()
+
+		yesterday := time.Now().Add(-(time.Hour * 24))
+		_, _ = todoList.InsertTodoItem("title", "description", yesterday.Format("2006-01-02 15:04"))
+
+		got := todoList.GetDueTodoItems()
+		if len(got) != 0 {
+			t.Errorf("expected to not have any due todo items")
+		}
+	})
 }
