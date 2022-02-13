@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/manifoldco/promptui"
+	"os"
 )
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 		if i == 0 {
 			err = PromptToAddItem(todoList, &PromptWrapper{})
 		} else if i == 1 {
-			printAllTodoItems(todoList)
+			err = PromptToListAllItems(todoList, os.Stdout)
 		} else if i == 2 {
 			break
 		} else {
@@ -33,12 +34,5 @@ func main() {
 			fmt.Printf("Something went wrong: %v\n", err)
 			break
 		}
-	}
-}
-
-func printAllTodoItems(todoList *TodoList) {
-	fmt.Println("Searching for todo items...")
-	for _, v := range todoList.GetAllTodos() {
-		fmt.Printf("Title=%s, Desc=%s, DueDateTime=%s\n", v.title, v.description, v.dueDateTime)
 	}
 }

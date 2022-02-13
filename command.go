@@ -1,6 +1,10 @@
 package main
 
-import "github.com/manifoldco/promptui"
+import (
+	"fmt"
+	"github.com/manifoldco/promptui"
+	"io"
+)
 
 type Command interface {
 	Run(label string) (string, error)
@@ -32,6 +36,17 @@ func PromptToAddItem(todoList *TodoList, prompt Command) error {
 	_, err = todoList.InsertTodoItem(title, description, dueDateTime)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func PromptToListAllItems(todoList *TodoList, writer io.Writer) error {
+	for _, v := range todoList.GetAllTodos() {
+		_, err := fmt.Fprintf(writer, "Title=%s, Desc=%s, DueDateTime=%s\n", v.title, v.description, v.dueDateTime)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
