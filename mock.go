@@ -4,6 +4,7 @@ import "strings"
 
 type MockPromptWrapper struct {
 	labels []string
+	items  *[]TodoItem
 }
 
 func (pw *MockPromptWrapper) Run(label string) (string, error) {
@@ -14,4 +15,11 @@ func (pw *MockPromptWrapper) Run(label string) (string, error) {
 	}
 
 	return label, nil
+}
+
+func (pw *MockPromptWrapper) RunOnSelect(label string, items []TodoItem) (int, string, error) {
+	pw.labels = append(pw.labels, label)
+	pw.items = &items
+
+	return 0, "some_item", nil
 }

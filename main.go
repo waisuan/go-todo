@@ -11,7 +11,7 @@ func main() {
 	for {
 		prompt := promptui.Select{
 			Label: "How can I help?",
-			Items: []string{"Add todo item", "List all todo items", "Exit"},
+			Items: []string{"Add todo item", "List all todo items", "Delete a todo item", "Exit"},
 		}
 
 		i, _, err := prompt.Run()
@@ -25,6 +25,8 @@ func main() {
 		} else if i == 1 {
 			err = PromptToListAllItems(todoList, os.Stdout)
 		} else if i == 2 {
+			err = PromptToDeleteItem(todoList, &PromptWrapper{})
+		} else if i == 3 {
 			break
 		} else {
 			fmt.Println("Operation is not supported yet!")

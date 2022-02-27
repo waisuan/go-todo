@@ -101,3 +101,7 @@ func (t *TodoList) GetDueTodoItems() []TodoItem {
 
 	return dueItems
 }
+
+func (tt TodoItem) String() string {
+	return fmt.Sprintf("%v | %v | %v", tt.title, tt.description, tt.dueDateTime)
+}

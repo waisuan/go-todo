@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestGetAllTodos(t *testing.T) {
+func TestTodoList(t *testing.T) {
 	createTodoItem := func(todoList *TodoList) *TodoItem {
 		t.Helper()
 
@@ -18,7 +18,7 @@ func TestGetAllTodos(t *testing.T) {
 		return todoItem
 	}
 
-	t.Run("empty todo list", func(t *testing.T) {
+	t.Run("get empty todo list", func(t *testing.T) {
 		todoList := NewTodoList()
 
 		var want []TodoItem
@@ -29,7 +29,7 @@ func TestGetAllTodos(t *testing.T) {
 		}
 	})
 
-	t.Run("todo items have IDs", func(t *testing.T) {
+	t.Run("new todo items have IDs", func(t *testing.T) {
 		todoList := NewTodoList()
 
 		got := createTodoItem(todoList).id
@@ -39,7 +39,7 @@ func TestGetAllTodos(t *testing.T) {
 		}
 	})
 
-	t.Run("saves todo items", func(t *testing.T) {
+	t.Run("get todo items in ascending order", func(t *testing.T) {
 		todoList := NewTodoList()
 
 		var want []TodoItem
@@ -55,7 +55,7 @@ func TestGetAllTodos(t *testing.T) {
 		}
 	})
 
-	t.Run("invalid due date time", func(t *testing.T) {
+	t.Run("insert with invalid due date time", func(t *testing.T) {
 		todoList := NewTodoList()
 
 		_, err := todoList.InsertTodoItem("title", "description", "2006-01-02")

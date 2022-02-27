@@ -6,8 +6,9 @@ import (
 	"io"
 )
 
-type Command interface {
+type Prompt interface {
 	Run(label string) (string, error)
+	RunOnSelect(label string, items []TodoItem) (int, string, error)
 }
 
 type PromptWrapper struct{}
@@ -17,7 +18,12 @@ func (pw *PromptWrapper) Run(label string) (string, error) {
 	return prompt.Run()
 }
 
-func PromptToAddItem(todoList *TodoList, prompt Command) error {
+func (pw *PromptWrapper) RunOnSelect(label string, items []TodoItem) (int, string, error) {
+	prompt := promptui.Select{Label: label, Items: items}
+	return prompt.Run()
+}
+
+func PromptToAddItem(todoList *TodoList, prompt Prompt) error {
 	title, err := prompt.Run("Title")
 	if err != nil {
 		return err
@@ -47,6 +53,21 @@ func PromptToListAllItems(todoList *TodoList, writer io.Writer) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func PromptToDeleteItem(todoList *TodoList, prompt Prompt) error {
+	todos := todoList.GetAllTodos()
+	idx, _, err := prompt.RunOnSelect("Which item do you want to delete?", todos)
+	if err != nil {
+		return err
+	}
+
+	err = todoList.DeleteTodoItem(todos[idx].id)
+	if err != nil {
+		return err
 	}
 
 	return nil

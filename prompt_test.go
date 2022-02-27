@@ -7,7 +7,7 @@ import (
 )
 
 func TestPromptToAddItem(t *testing.T) {
-	t.Run("the right prompts were triggered", func(t *testing.T) {
+	t.Run("prompts to add item", func(t *testing.T) {
 		todoList := NewTodoList()
 
 		mockPromptWrapper := MockPromptWrapper{}
@@ -55,6 +55,36 @@ Title=Title2, Desc=Description2, DueDateTime=1992-11-12 13:43:00 +0000 UTC
 		got := buffer.String()
 		if got != want {
 			t.Errorf("expected all todo items to be printed. want: %v, got: %v", want, got)
+		}
+	})
+}
+
+func TestPromptToDeleteItem(t *testing.T) {
+	t.Run("prompts to delete item", func(t *testing.T) {
+		todoList := NewTodoList()
+		todoItem, _ := todoList.InsertTodoItem("Title", "Description", "1991-11-12 13:43")
+
+		mockPromptWrapper := MockPromptWrapper{}
+		err := PromptToDeleteItem(todoList, &mockPromptWrapper)
+		if err != nil {
+			t.Fatalf("did not expect to see an error")
+		}
+
+		wantLabel := "Which item do you want to delete?"
+		gotLabel := mockPromptWrapper.labels[0]
+		if gotLabel != wantLabel {
+			t.Fatalf("unexpected label; want: %v, got %v", wantLabel, gotLabel)
+		}
+
+		wantItems := []TodoItem{*todoItem}
+		gotItems := *mockPromptWrapper.items
+		if !reflect.DeepEqual(wantItems, gotItems) {
+			t.Fatalf("unexpected items; want: %v, got %v", wantItems, gotItems)
+		}
+
+		_, err = todoList.GetTodoItem(todoItem.id)
+		if err == nil {
+			t.Errorf("expected todo item to be deleted")
 		}
 	})
 }
