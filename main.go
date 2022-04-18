@@ -1,14 +1,9 @@
 package main
 
-import (
-	"log"
-	"net/http"
-)
-
 func main() {
-	todoList := NewTodoList()
-	err := http.ListenAndServe(":8080", NewRouteHandler(todoList))
+	r := SetupRouter()
+	err := r.Run(":8080")
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 }
