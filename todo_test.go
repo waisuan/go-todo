@@ -32,7 +32,7 @@ func TestTodoList(t *testing.T) {
 	t.Run("new todo items have IDs", func(t *testing.T) {
 		todoList := NewTodoList()
 
-		got := createTodoItem(todoList).id
+		got := createTodoItem(todoList).Id
 
 		if got == "" {
 			t.Errorf("expected a non-empty item ID")
@@ -67,7 +67,7 @@ func TestTodoList(t *testing.T) {
 	t.Run("get specific todo item", func(t *testing.T) {
 		todoList := NewTodoList()
 
-		id := createTodoItem(todoList).id
+		id := createTodoItem(todoList).Id
 
 		_, err := todoList.GetTodoItem(id)
 		if err != nil {
@@ -87,7 +87,7 @@ func TestTodoList(t *testing.T) {
 	t.Run("delete a todo item", func(t *testing.T) {
 		todoList := NewTodoList()
 
-		id := createTodoItem(todoList).id
+		id := createTodoItem(todoList).Id
 
 		err := todoList.DeleteTodoItem(id)
 		if err != nil {
@@ -114,14 +114,14 @@ func TestTodoList(t *testing.T) {
 
 		todoItem := *createTodoItem(todoList)
 
-		todoItem.description = "Updated Description"
+		todoItem.Description = "Updated Description"
 		err := todoList.UpdateTodoItem(todoItem)
 		if err != nil {
 			t.Fatalf("expected a todo item that exists")
 		}
 
-		item, _ := todoList.GetTodoItem(todoItem.id)
-		if item.description != todoItem.description {
+		item, _ := todoList.GetTodoItem(todoItem.Id)
+		if item.Description != todoItem.Description {
 			t.Errorf("expected todo item to be updated")
 		}
 	})

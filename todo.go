@@ -9,11 +9,11 @@ import (
 )
 
 type TodoItem struct {
-	id          string
-	title       string
-	description string
-	dueDateTime time.Time
-	createdAt   time.Time
+	Id          string    `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	DueDateTime time.Time `json:"dueDateTime"`
+	CreatedAt   time.Time `json:"createdAt"`
 }
 
 type TodoList struct {
@@ -35,7 +35,7 @@ func (t *TodoList) GetAllTodos() []TodoItem {
 	}
 
 	sort.Slice(items, func(i, j int) bool {
-		return items[i].createdAt.Before(items[j].createdAt)
+		return items[i].CreatedAt.Before(items[j].CreatedAt)
 	})
 	return items
 }
@@ -56,25 +56,25 @@ func (t *TodoList) InsertTodoItem(title string, description string, dueDateTime 
 	}
 
 	item := TodoItem{
-		id:          uuid.New().String(),
-		title:       title,
-		description: description,
-		dueDateTime: ti,
-		createdAt:   time.Now(),
+		Id:          uuid.New().String(),
+		Title:       title,
+		Description: description,
+		DueDateTime: ti,
+		CreatedAt:   time.Now(),
 	}
 
-	t.items[item.id] = item
+	t.items[item.Id] = item
 
 	return &item, nil
 }
 
 func (t *TodoList) UpdateTodoItem(item TodoItem) error {
-	_, ok := t.items[item.id]
+	_, ok := t.items[item.Id]
 	if !ok {
 		return errors.New("can't update non-existent item")
 	}
 
-	t.items[item.id] = item
+	t.items[item.Id] = item
 
 	return nil
 }
@@ -94,7 +94,7 @@ func (t *TodoList) GetDueTodoItems() []TodoItem {
 	var dueItems []TodoItem
 	now := time.Now()
 	for _, item := range t.items {
-		if now.Before(item.dueDateTime) {
+		if now.Before(item.DueDateTime) {
 			dueItems = append(dueItems, item)
 		}
 	}
@@ -103,5 +103,5 @@ func (t *TodoList) GetDueTodoItems() []TodoItem {
 }
 
 func (tt TodoItem) String() string {
-	return fmt.Sprintf("%v | %v | %v", tt.title, tt.description, tt.dueDateTime)
+	return fmt.Sprintf("%v | %v | %v", tt.Title, tt.Description, tt.DueDateTime)
 }
