@@ -1,7 +1,8 @@
 package main
 
 func main() {
-	r := SetupRouter()
+	todoList := NewTodoList()
+	r := SetupRouter(todoList)
 	err := r.Run(":8080")
 	if err != nil {
 		panic(err)
